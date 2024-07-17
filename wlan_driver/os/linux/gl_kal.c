@@ -8769,7 +8769,7 @@ void kalIndicateChannelSwitch(IN struct GLUE_INFO *prGlueInfo,
 	KERNEL_VERSION(6, 0, 0) <= CFG80211_VERSION_CODE
 		, 0
 #endif
-#if ((defined (AML_KERNEL_VERSION) && AML_KERNEL_VERSION >= 15) || LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0))
+#if ((defined (AML_KERNEL_VERSION) && AML_KERNEL_VERSION >= 15) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 153))
 		, 0
 #endif
 		);
