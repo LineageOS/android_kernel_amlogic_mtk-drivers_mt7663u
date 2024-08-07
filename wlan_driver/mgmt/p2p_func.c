@@ -51,6 +51,7 @@
  *****************************************************************************/
 
 #include "precomp.h"
+#include "gl_os.h"
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 41) && defined (CONFIG_AMLOGIC_KERNEL_VERSION))
 #include <linux/upstream_version.h>
@@ -2171,17 +2172,9 @@ void p2pFuncDfsSwitchCh(IN struct ADAPTER *prAdapter,
 	if (prP2PInfo->chandef) {
 		if (prP2PInfo->prDevHandler) {
 			DBGLOG(P2P, INFO, "p2pFuncDfsSwitchCh: Update to OS\n");
-			cfg80211_ch_switch_notify(
+			mt_cfg80211_ch_switch_notify(
 				prP2PInfo->prDevHandler,
-				prP2PInfo->chandef
-#if (CFG_ADVANCED_80211_MLO == 1) || \
-	KERNEL_VERSION(6, 0, 0) <= CFG80211_VERSION_CODE
-				, 0
-#endif
-#if ((defined (AML_KERNEL_VERSION) && AML_KERNEL_VERSION >= 15) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 153))
-				, 0
-#endif
-				);
+				prP2PInfo->chandef, 0);
 			DBGLOG(P2P, INFO,
 				"p2pFuncDfsSwitchCh: Update to OS Done\n");
 		} else

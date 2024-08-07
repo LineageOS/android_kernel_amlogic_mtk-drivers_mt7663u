@@ -191,6 +191,10 @@
 
 #include <linux/io.h>		/* readw and writew */
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 41) && defined (CONFIG_AMLOGIC_KERNEL_VERSION))
+#include <linux/upstream_version.h>
+#endif
+
 #if WIRELESS_EXT > 12
 #include <net/iw_handler.h>
 #endif
@@ -1209,6 +1213,36 @@ static inline u16 mtk_wlan_ndev_select_queue(
 	skb->priority = cfg80211_classify8021d(skb, NULL);
 #endif
 	return ieee8021d_to_queue[skb->priority];
+}
+
+static inline void mt_cfg80211_ch_switch_notify(struct net_device *dev,
+	struct cfg80211_chan_def *chandef, unsigned int link_id)
+{
+#if ( (defined (CONFIG_AMLOGIC_KERNEL_VERSION) && defined (AML_KERNEL_VERSION)) && (\
+		(CONFIG_AMLOGIC_KERNEL_VERSION == 13515 && AML_KERNEL_VERSION >= 15)\
+	 || (CONFIG_AMLOGIC_KERNEL_VERSION == 14515 && AML_KERNEL_VERSION >= 12) ) )\
+	 || (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0) && LINUX_VERSION_CODE < KERNEL_VERSION(6, 9, 0))
+	 return cfg80211_ch_switch_notify(dev, &chandef, link_id, 0);
+#elif defined (CFG80211_SINGLE_NETDEV_MULTI_LINK_SUPPORT)
+	 return cfg80211_ch_switch_notify(dev, &chandef, link_id);
+#else
+	 return cfg80211_ch_switch_notify(dev, &chandef);
+#endif
+}
+
+static inline void mt_cfg80211_ch_switch_started_notify(struct net_device *dev,
+	struct cfg80211_chan_def *chandef, unsigned int link_id, u8 count, bool quiet)
+{
+#if ( (defined (CONFIG_AMLOGIC_KERNEL_VERSION) && defined (AML_KERNEL_VERSION)) && (\
+		(CONFIG_AMLOGIC_KERNEL_VERSION == 13515 && AML_KERNEL_VERSION >= 15)\
+	 || (CONFIG_AMLOGIC_KERNEL_VERSION == 14515 && AML_KERNEL_VERSION >= 12) ) )\
+	 || (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 3, 0) && LINUX_VERSION_CODE < KERNEL_VERSION(6, 9, 0))
+	 return cfg80211_ch_switch_started_notify(dev, &chandef, link_id, count, quiet, 0);
+#elif defined (CFG80211_SINGLE_NETDEV_MULTI_LINK_SUPPORT)
+	 return cfg80211_ch_switch_started_notify(dev, &chandef, link_id, count, quiet);
+#else
+	 return cfg80211_ch_switch_started_notify(dev, &chandef, count);
+#endif
 }
 
 #if KERNEL_VERSION(2, 6, 34) > LINUX_VERSION_CODE

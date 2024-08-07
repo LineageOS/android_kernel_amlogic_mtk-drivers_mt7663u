@@ -8764,15 +8764,7 @@ void kalIndicateChannelSwitch(IN struct GLUE_INFO *prGlueInfo,
 	DBGLOG(REQ, STATE, "DFS channel switch to %d\n", ucChannelNum);
 
 	cfg80211_chandef_create(&chandef, prChannel, rChannelType);
-	cfg80211_ch_switch_notify(prGlueInfo->prDevHandler, &chandef
-#if (CFG_ADVANCED_80211_MLO == 1) || \
-	KERNEL_VERSION(6, 0, 0) <= CFG80211_VERSION_CODE
-		, 0
-#endif
-#if ((defined (AML_KERNEL_VERSION) && AML_KERNEL_VERSION >= 15) || LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 153))
-		, 0
-#endif
-		);
+	mt_cfg80211_ch_switch_notify(prGlueInfo->prDevHandler, &chandef, 0);
 }
 #endif
 

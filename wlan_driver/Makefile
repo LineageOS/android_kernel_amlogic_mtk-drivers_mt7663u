@@ -96,6 +96,7 @@ PLATFORM_FLAGS += -Wframe-larger-than=1400
 #-Werror
 PLATFORM_FLAGS += -Wno-implicit-function-declaration
 PLATFORM_FLAGS += -Wno-unused-variable
+PLATFORM_FLAGS += -Wno-incompatible-pointer-types
 
 # Define maximum different channels supported for ieee80211_iface_combination setting.
 CFG_NUM_DIFFERENT_CHANNELS_STA=1
