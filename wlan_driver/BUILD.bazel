@@ -1,0 +1,17 @@
+package(
+    default_visibility = ["//visibility:public"],
+)
+
+exports_files(["Makefile"])
+
+filegroup(
+    name = "mt7663u_srcs",
+    srcs = glob(
+        ["**"],
+        exclude = [
+            "BUILD.bazel",
+            "**/*.bzl",
+            ".git/**",
+        ],
+    ),
+)
