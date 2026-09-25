@@ -7845,9 +7845,7 @@ int mtk_cfg_get_txpower(struct wiphy *wiphy,
 	}
 
 	if (mtk_IsP2PNetDevice(prGlueInfo, wdev->netdev) <= 0) {
-		DBGLOG_LIMITED(REQ, WARN,
-			"STA doesn't support this function\n");
-		return -EFAULT;
+		return -EOPNOTSUPP;
 	}
 
 	return mtk_p2p_cfg80211_get_txpower(wiphy, wdev, dbm);
