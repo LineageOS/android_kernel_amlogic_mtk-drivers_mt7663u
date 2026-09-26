@@ -4156,7 +4156,12 @@ int mtk_cfg80211_assoc(struct wiphy *wiphy,
 		if (req->crypto.wpa_versions & NL80211_WPA_VERSION_1)
 			prGlueInfo->rWpaInfo.u4WpaVersion =
 			IW_AUTH_WPA_VERSION_WPA;
-		else if (req->crypto.wpa_versions & NL80211_WPA_VERSION_2)
+		else if ((req->crypto.wpa_versions & NL80211_WPA_VERSION_2)
+#if CFG_SUPPORT_SAE
+			 || (req->crypto.n_akm_suites &&
+			     req->crypto.akm_suites[0] == WLAN_AKM_SUITE_SAE)
+#endif
+			)
 			prGlueInfo->rWpaInfo.u4WpaVersion =
 			IW_AUTH_WPA_VERSION_WPA2;
 		else
